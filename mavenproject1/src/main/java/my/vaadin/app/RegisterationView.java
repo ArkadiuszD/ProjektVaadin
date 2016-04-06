@@ -20,7 +20,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public class RegisterView extends CustomComponent implements View {
+public class RegisterationView extends CustomComponent implements View {
 
     public TextField user = new TextField("Input nick");
     public PasswordField pwd1 = new PasswordField();
@@ -34,7 +34,7 @@ public class RegisterView extends CustomComponent implements View {
 		// TODO Auto-generated method stub
 		
 	}
-	public RegisterView(){
+	public RegisterationView(){
 		
 		
 		FormLayout form = new FormLayout();

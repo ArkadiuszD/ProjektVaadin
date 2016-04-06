@@ -16,11 +16,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class User implements Serializable  {
 
     @NotEmpty
-    @Size(min = 5, max = 12)
+    @Size(min = 4, max = 20)
     private String name;
     
     @NotEmpty
-    @Size(min = 5)
+    @Size(min = 4, max = 20)
     private String pass;
     
     public User(String string, String string2) {

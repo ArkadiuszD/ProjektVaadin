@@ -5,19 +5,22 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 
 
-public class RegisterPanelWindow extends Window{
+public class LoginView extends Window{
 
-    private LoginForm RegisterForm;
+    private LoginForm loginForm;
     private Notification welcomeNotification;
 
-    public RegisterPanelWindow(){
-        super("WELCOME");
-        this.setResizable(false);
-        this.setClosable(false);
+    public LoginView(){
+        super("Vaadin app");
+        this.setResizable(true);
+        //this.setHeight("100%");
+        this.setClosable(true);
         this.setModal(true);
-        this.setIcon(FontAwesome.SIGN_IN);
-        RegisterForm = new LoginForm();
-        setContent(RegisterForm);
+        this.setSizeFull();
+        
+   //     this.setIcon(FontAwesome.SIGN_IN);
+        loginForm = new LoginForm();
+        setContent(loginForm);
         prepareWelcomeMessage();
 
         this.addCloseListener((CloseListener) (closeEvent) -> {
@@ -28,7 +31,7 @@ public class RegisterPanelWindow extends Window{
     }
 
     public void prepareWelcomeMessage(){
-        welcomeNotification = new Notification("Logged successfully", Notification.Type.HUMANIZED_MESSAGE);
+        welcomeNotification = new Notification("You're in", Notification.Type.HUMANIZED_MESSAGE);
         welcomeNotification.setDelayMsec(300);
     }
 }

@@ -8,22 +8,22 @@ import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 
-public class RegisterForm extends CustomComponent {
+public class RegistrationForm extends CustomComponent {
 
-	public TextField user = new TextField("Input nick");
-    public PasswordField pwd1 = new PasswordField("Password:");
-    public PasswordField pwd2 = new PasswordField("Pass-check:");
-    public Button submit = new Button();
+	public TextField user = new TextField("username:");
+    public PasswordField pass = new PasswordField("Password:");
+    public PasswordField confpass = new PasswordField("Confirm password:");
+    public Button accept = new Button();
     public FormLayout form;
     BeanItemContainer<User> users =
     		new BeanItemContainer<User>(User.class); 
 
-    public RegisterForm(){
+    public RegistrationForm(){
        		form = new FormLayout();
     		form.addComponent(user);
-    		form.addComponent(pwd1);
-    		form.addComponent(pwd2);
-    		form.addComponent(submit);
+    		form.addComponent(pass);
+    		form.addComponent(confpass);
+    		form.addComponent(accept);
     		
 
     		VerticalLayout viewLayout = new VerticalLayout(form);
@@ -33,10 +33,10 @@ public class RegisterForm extends CustomComponent {
     	}
     	public void buttonClick(ClickEvent event) {
     		String username = user.getValue();
-            String password1 = this.pwd1.getValue();
-            String password2 = this.pwd2.getValue();
-            if(pwd1.equals(pwd2)){
-            	users.addBean(new User(user.getValue(), pwd1.getValue()));
+            String password1 = this.pass.getValue();
+            String password2 = this.confpass.getValue();
+            if(pass.equals(confpass)){
+            	users.addBean(new User(user.getValue(), pass.getValue()));
     	}
     	}
 

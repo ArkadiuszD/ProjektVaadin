@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class GistService {
 
 	private static GistService instance;
+        private static double sum;
 	private static final Logger LOGGER = Logger.getLogger(GistService.class.getName());
 
 	private final HashMap<Long, Gist> contacts = new HashMap<>();
@@ -122,7 +123,7 @@ public class GistService {
 	public synchronized long count() {
 		return contacts.size();
 	}
-
+       
 	/**
 	 * Deletes a customer from a system
 	 *
@@ -132,7 +133,8 @@ public class GistService {
 	public synchronized void delete(Gist value) {
 		contacts.remove(value.getId());
 	}
-
+        
+        
 	/**
 	 * Persists or updates customer in the system. Also assigns an identifier
  for new Gist instances.
@@ -142,7 +144,7 @@ public class GistService {
 	public synchronized void save(Gist entry) {
 		if (entry == null) {
 			LOGGER.log(Level.SEVERE,
-					"Customer is null. Are you sure you have connected your form to the application as described in tutorial chapter 7?");
+					"Form is empty");
 			return;
 		}
 		if (entry.getId() == null) {
@@ -171,9 +173,8 @@ public class GistService {
 				c.setPrice(r.nextInt(1000));
 				c.setType(GistStatus.values()[r.nextInt(GistStatus.values().length)]);
 				Calendar cal = Calendar.getInstance();
-				//int daysOld = 0 - r.nextInt(365 * 15 + 365 * 60);
-				//cal.add(Calendar.DAY_OF_MONTH, daysOld);
 				c.setBuyDate(cal.getTime());
+                                sum += c.getPrice();
 				save(c);
 			}
 		}

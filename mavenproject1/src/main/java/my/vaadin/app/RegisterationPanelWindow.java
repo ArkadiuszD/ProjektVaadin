@@ -5,19 +5,19 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 
 
-public class LoginPanelWindow extends Window{
+public class RegisterationPanelWindow extends Window{
 
-    private LoginForm loginForm;
+    private LoginForm RegisterForm;
     private Notification welcomeNotification;
 
-    public LoginPanelWindow(){
+    public RegisterationPanelWindow(){
         super("WELCOME");
         this.setResizable(false);
         this.setClosable(false);
         this.setModal(true);
         this.setIcon(FontAwesome.SIGN_IN);
-        loginForm = new LoginForm();
-        setContent(loginForm);
+        RegisterForm = new LoginForm();
+        setContent(RegisterForm);
         prepareWelcomeMessage();
 
         this.addCloseListener((CloseListener) (closeEvent) -> {

@@ -63,13 +63,13 @@ public class MyUI extends UI {
 			String password1 = pwd1.getValue();
 			String password2 = pwd2.getValue();
 			if (!pwd1.getValue().equals(pwd2.getValue())) {
-				Notification errorNotification = new Notification("Passwords do not match", Notification.Type.ERROR_MESSAGE);
+				Notification errorNotification = new Notification("Wrong passwords", Notification.Type.ERROR_MESSAGE);
 				errorNotification.setDelayMsec(200);
 				errorNotification.show(Page.getCurrent());
 			}
 			else {
 				users.addBean(new User(user.getValue(), pwd1.getValue()));
-				LoginPanelWindow loginPanelWindow = new LoginPanelWindow();
+				LoginView loginPanelWindow = new LoginView();
 				getUI().addWindow(loginPanelWindow);
 				setContent(null);
 			}
@@ -90,18 +90,18 @@ public class MyUI extends UI {
 		logout = new Button("logout", (Button.ClickListener) (clickEvent) -> {
 			getCurrentSession().removeAttribute("user");
 			setContent(null);
-			getUI().addWindow(new LoginPanelWindow());
+			getUI().addWindow(new LoginView());
 		});
 
 		layout.addComponent(logout);
 
-		filterText.setInputPrompt("filter by name...");
+		filterText.setInputPrompt("Write part name");
 		filterText.addTextChangeListener(e -> {
 			grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, service.findAll(e.getText())));
 		});
 
 		Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
-		clearFilterTextBtn.setDescription("Clear the current filter");
+		clearFilterTextBtn.setDescription("Clear");
 		clearFilterTextBtn.addClickListener(e -> {
 			filterText.clear();
 			updateList();
@@ -111,13 +111,13 @@ public class MyUI extends UI {
 		filtering.addComponents(filterText, clearFilterTextBtn);
 		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-		Button addCustomerBtn = new Button("Add new customer");
-		addCustomerBtn.addClickListener(e -> {
+		Button addBtn = new Button("Add new gist");
+		addBtn.addClickListener(e -> {
 			grid.select(null);
 			form.setCustomer(new Gist());
 		});
 
-		HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
+		HorizontalLayout toolbar = new HorizontalLayout(filtering, addBtn);
 		toolbar.setSpacing(true);
 
 		grid.setColumns("name", "price","type", "buyDate");
@@ -148,7 +148,7 @@ public class MyUI extends UI {
 		});
                 
                 if (!isLoggedIn()) {
-			LoginPanelWindow loginPanelWindow = new LoginPanelWindow();
+			LoginView loginPanelWindow = new LoginView();
 			getUI().addWindow(loginPanelWindow);
 			setContent(null);
 		} else {
