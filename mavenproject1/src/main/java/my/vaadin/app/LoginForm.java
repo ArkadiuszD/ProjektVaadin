@@ -45,7 +45,7 @@ public class LoginForm extends CustomComponent {
                 // TODO: remove it to validation class after db integration
                 if ((!user.getName().equals("admin") && !user.getPass().equals("admin"))
                         && (!user.getName().equals("Rabbit99") && !user.getPass().equals("Rabbit99"))
-                        && (!user.getName().equals("test2") && !user.getPass().equals("test2"))) {
+                        && (!user.getName().equals("test1") && !user.getPass().equals("test1"))) {
                     showLoginErrorMessage();
                     return;
                 }

@@ -13,8 +13,7 @@ public class LoginView extends Window{
     public LoginView(){
         super("Vaadin app");
         this.setResizable(true);
-        //this.setHeight("100%");
-        this.setClosable(true);
+        this.setClosable(false);
         this.setModal(true);
         this.setSizeFull();
         
@@ -32,6 +31,6 @@ public class LoginView extends Window{
 
     public void prepareWelcomeMessage(){
         welcomeNotification = new Notification("You're in", Notification.Type.HUMANIZED_MESSAGE);
-        welcomeNotification.setDelayMsec(300);
+        welcomeNotification.setDelayMsec(50);
     }
 }

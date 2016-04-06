@@ -32,7 +32,7 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @Theme("mytheme")
 @Widgetset("my.vaadin.app.MyAppWidgetset")
-public class MyUI extends UI {
+public class MyUI extends UI implements Broadcaster.BroadcastListener {
 
 	public TextField user = new TextField("Nickname:");
 	public PasswordField pwd1 = new PasswordField("Password:");
@@ -56,6 +56,7 @@ public class MyUI extends UI {
 		regform.addComponent(user);
 		regform.addComponent(pwd1);
 		regform.addComponent(pwd2);
+                Broadcaster.register(this);
 		
 
 		register = new Button("register", (Button.ClickListener) (clickEvent) -> {
@@ -177,9 +178,20 @@ public class MyUI extends UI {
 		grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, customers));
 	}
 
-	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
-	public static class MyUIServlet extends VaadinServlet {
+        @Override
+    public void receiveBroadcast(final String message) {
+        // Must lock the session to execute logic safely
+        access(new Runnable() {
+            @Override
+            public void run() {
+                updateList();
+            }
+        });
+    }
+	@Override
+	public void detach() {
+		Broadcaster.unregister(this);
+		super.detach();
 	}
         
         public void setRegContent() {
@@ -190,4 +202,10 @@ public class MyUI extends UI {
 		setContent(layout);
 	}
         
+	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
+	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
+	public static class MyUIServlet extends VaadinServlet {
+	}
+        
+
 }
