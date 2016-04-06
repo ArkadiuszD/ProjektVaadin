@@ -1,5 +1,5 @@
 package my.vaadin.app;
 
-public enum CustomerStatus {
+public enum GistStatus {
     Parts, Inspection, Fuel, Repair, Accessories, Tuning
 }

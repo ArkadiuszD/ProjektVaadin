@@ -3,21 +3,21 @@ package my.vaadin.app;
 import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.event.ShortcutAction.KeyCode;
 
-public class CustomerForm extends CustomerFormDesign {
+public class GistForm extends GistFormDesign {
 
-	CustomerService service = CustomerService.getInstance();
-	private Customer customer;
+	GistService service = GistService.getInstance();
+	private Gist customer;
 	private MyUI myUI;
 
-	public CustomerForm(MyUI myUI) {
+	public GistForm(MyUI myUI) {
 		this.myUI = myUI;
-		type.addItems(CustomerStatus.values());
+		type.addItems(GistStatus.values());
 		save.setClickShortcut(KeyCode.ENTER);
 		save.addClickListener(e -> this.save());
 		delete.addClickListener(e -> this.delete());
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(Gist customer) {
 		this.customer = customer;
 		BeanFieldGroup.bindFieldsUnbuffered(customer, this);
 

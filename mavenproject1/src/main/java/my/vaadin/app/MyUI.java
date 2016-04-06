@@ -43,10 +43,10 @@ public class MyUI extends UI {
 
 	private Button logout;
 	private VerticalLayout layout;
-	private CustomerService service = CustomerService.getInstance();
+	private GistService service = GistService.getInstance();
 	private Grid grid = new Grid();
 	private TextField filterText = new TextField();
-	CustomerForm form = new CustomerForm(this);
+	GistForm form = new GistForm(this);
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
@@ -97,7 +97,7 @@ public class MyUI extends UI {
 
 		filterText.setInputPrompt("filter by name...");
 		filterText.addTextChangeListener(e -> {
-			grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, service.findAll(e.getText())));
+			grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, service.findAll(e.getText())));
 		});
 
 		Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
@@ -114,7 +114,7 @@ public class MyUI extends UI {
 		Button addCustomerBtn = new Button("Add new customer");
 		addCustomerBtn.addClickListener(e -> {
 			grid.select(null);
-			form.setCustomer(new Customer());
+			form.setCustomer(new Gist());
 		});
 
 		HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
@@ -142,7 +142,7 @@ public class MyUI extends UI {
 			if (event.getSelected().isEmpty()) {
 				form.setVisible(false);
 			} else {
-				Customer customer = (Customer) event.getSelected().iterator().next();
+				Gist customer = (Gist) event.getSelected().iterator().next();
 				form.setCustomer(customer);
 			}
 		});
@@ -173,8 +173,8 @@ public class MyUI extends UI {
 
 	public void updateList() {
 		// fetch list of Customers from service and assign it to Grid
-		List<Customer> customers = service.findAll(filterText.getValue());
-		grid.setContainerDataSource(new BeanItemContainer<>(Customer.class, customers));
+		List<Gist> customers = service.findAll(filterText.getValue());
+		grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, customers));
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

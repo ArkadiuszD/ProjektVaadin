@@ -15,48 +15,48 @@ import java.util.logging.Logger;
  * this class would be replaced by e.g. EJB or a Spring based service class.
  * <p>
  * In demos/tutorials/examples, get a reference to this service class with
- * {@link CustomerService#getInstance()}.
+ * {@link GistService#getInstance()}.
  */
-public class CustomerService {
+public class GistService {
 
-	private static CustomerService instance;
-	private static final Logger LOGGER = Logger.getLogger(CustomerService.class.getName());
+	private static GistService instance;
+	private static final Logger LOGGER = Logger.getLogger(GistService.class.getName());
 
-	private final HashMap<Long, Customer> contacts = new HashMap<>();
+	private final HashMap<Long, Gist> contacts = new HashMap<>();
 	private long nextId = 0;
 
-	private CustomerService() {
+	private GistService() {
 	}
 
 	/**
-	 * @return a reference to an example facade for Customer objects.
+	 * @return a reference to an example facade for Gist objects.
 	 */
-	public static CustomerService getInstance() {
+	public static GistService getInstance() {
 		if (instance == null) {
-			instance = new CustomerService();
+			instance = new GistService();
 			instance.ensureTestData();
 		}
 		return instance;
 	}
 
 	/**
-	 * @return all available Customer objects.
+	 * @return all available Gist objects.
 	 */
-	public synchronized List<Customer> findAll() {
+	public synchronized List<Gist> findAll() {
 		return findAll(null);
 	}
 
 	/**
-	 * Finds all Customer's that match given filter.
+	 * Finds all Gist's that match given filter.
 	 *
 	 * @param stringFilter
 	 *            filter that returned objects should match or null/empty string
 	 *            if all objects should be returned.
-	 * @return list a Customer objects
+	 * @return list a Gist objects
 	 */
-	public synchronized List<Customer> findAll(String stringFilter) {
-		ArrayList<Customer> arrayList = new ArrayList<>();
-		for (Customer contact : contacts.values()) {
+	public synchronized List<Gist> findAll(String stringFilter) {
+		ArrayList<Gist> arrayList = new ArrayList<>();
+		for (Gist contact : contacts.values()) {
 			try {
 				boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
 						|| contact.toString().toLowerCase().contains(stringFilter.toLowerCase());
@@ -64,13 +64,13 @@ public class CustomerService {
 					arrayList.add(contact.clone());
 				}
 			} catch (CloneNotSupportedException ex) {
-				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(GistService.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		Collections.sort(arrayList, new Comparator<Customer>() {
+		Collections.sort(arrayList, new Comparator<Gist>() {
 
 			@Override
-			public int compare(Customer o1, Customer o2) {
+			public int compare(Gist o1, Gist o2) {
 				return (int) (o2.getId() - o1.getId());
 			}
 		});
@@ -78,7 +78,7 @@ public class CustomerService {
 	}
 
 	/**
-	 * Finds all Customer's that match given filter and limits the resultset.
+	 * Finds all Gist's that match given filter and limits the resultset.
 	 *
 	 * @param stringFilter
 	 *            filter that returned objects should match or null/empty string
@@ -87,11 +87,11 @@ public class CustomerService {
 	 *            the index of first result
 	 * @param maxresults
 	 *            maximum result count
-	 * @return list a Customer objects
+	 * @return list a Gist objects
 	 */
-	public synchronized List<Customer> findAll(String stringFilter, int start, int maxresults) {
-		ArrayList<Customer> arrayList = new ArrayList<>();
-		for (Customer contact : contacts.values()) {
+	public synchronized List<Gist> findAll(String stringFilter, int start, int maxresults) {
+		ArrayList<Gist> arrayList = new ArrayList<>();
+		for (Gist contact : contacts.values()) {
 			try {
 				boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
 						|| contact.toString().toLowerCase().contains(stringFilter.toLowerCase());
@@ -99,13 +99,13 @@ public class CustomerService {
 					arrayList.add(contact.clone());
 				}
 			} catch (CloneNotSupportedException ex) {
-				Logger.getLogger(CustomerService.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(GistService.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		Collections.sort(arrayList, new Comparator<Customer>() {
+		Collections.sort(arrayList, new Comparator<Gist>() {
 
 			@Override
-			public int compare(Customer o1, Customer o2) {
+			public int compare(Gist o1, Gist o2) {
 				return (int) (o2.getId() - o1.getId());
 			}
 		});
@@ -127,19 +127,19 @@ public class CustomerService {
 	 * Deletes a customer from a system
 	 *
 	 * @param value
-	 *            the Customer to be deleted
+	 *            the Gist to be deleted
 	 */
-	public synchronized void delete(Customer value) {
+	public synchronized void delete(Gist value) {
 		contacts.remove(value.getId());
 	}
 
 	/**
 	 * Persists or updates customer in the system. Also assigns an identifier
-	 * for new Customer instances.
+ for new Gist instances.
 	 *
 	 * @param entry
 	 */
-	public synchronized void save(Customer entry) {
+	public synchronized void save(Gist entry) {
 		if (entry == null) {
 			LOGGER.log(Level.SEVERE,
 					"Customer is null. Are you sure you have connected your form to the application as described in tutorial chapter 7?");
@@ -149,7 +149,7 @@ public class CustomerService {
 			entry.setId(nextId++);
 		}
 		try {
-			entry = (Customer) entry.clone();
+			entry = (Gist) entry.clone();
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
@@ -171,11 +171,11 @@ public class CustomerService {
 			Random r = new Random(0);
 			for (String name : names) {
 				String[] split = name.split(" ");
-				Customer c = new Customer();
+				Gist c = new Gist();
 				c.setName(split[0]);
 				c.setNote(split[1]);
-				c.setPrice(100 + (1000 - 100) *r.nextDouble());
-				c.setType(CustomerStatus.values()[r.nextInt(CustomerStatus.values().length)]);
+				c.setPrice(r.nextInt(1000));
+				c.setType(GistStatus.values()[r.nextInt(GistStatus.values().length)]);
 				Calendar cal = Calendar.getInstance();
 				int daysOld = 0 - r.nextInt(365 * 15 + 365 * 60);
 				cal.add(Calendar.DAY_OF_MONTH, daysOld);
