@@ -29,14 +29,14 @@ public class GistForm extends GistFormDesign {
 
 	private void delete() {
 		service.delete(gist);
-                Broadcaster.broadcast("");
+                Broadcaster.broadcast("Deleted some gist");
 		myUI.updateList();
 		setVisible(false);
 	}
 
 	private void save() {
 		service.save(gist);
-                Broadcaster.broadcast("");
+                Broadcaster.broadcast("Added new gist");
 		myUI.updateList();
 		setVisible(false);
 	}

@@ -1,5 +1,6 @@
 package my.vaadin.app;
 
+import com.vaadin.annotations.Push;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +33,7 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @Theme("mytheme")
 @Widgetset("my.vaadin.app.MyAppWidgetset")
+@Push
 public class MyUI extends UI implements Broadcaster.BroadcastListener {
 
 	public TextField user = new TextField("Nickname:");
