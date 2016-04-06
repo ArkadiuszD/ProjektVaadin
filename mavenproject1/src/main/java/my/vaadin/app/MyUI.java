@@ -114,7 +114,7 @@ public class MyUI extends UI {
 		Button addBtn = new Button("Add new gist");
 		addBtn.addClickListener(e -> {
 			grid.select(null);
-			form.setCustomer(new Gist());
+			form.setGist(new Gist());
 		});
 
 		HorizontalLayout toolbar = new HorizontalLayout(filtering, addBtn);
@@ -142,8 +142,8 @@ public class MyUI extends UI {
 			if (event.getSelected().isEmpty()) {
 				form.setVisible(false);
 			} else {
-				Gist customer = (Gist) event.getSelected().iterator().next();
-				form.setCustomer(customer);
+				Gist gist = (Gist) event.getSelected().iterator().next();
+				form.setGist(gist);
 			}
 		});
                 

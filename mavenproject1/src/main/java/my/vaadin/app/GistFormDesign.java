@@ -24,7 +24,7 @@ public class GistFormDesign extends FormLayout {
 	protected TextField name;
 	protected TextField note;
 	protected TextField price;
-        protected TextField sum;
+       // protected TextField sum;
 	protected NativeSelect type;
 	protected PopupDateField buyDate;
 	protected Button save;

@@ -6,7 +6,7 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 public class GistForm extends GistFormDesign {
 
 	GistService service = GistService.getInstance();
-	private Gist customer;
+	private Gist gist;
 	private MyUI myUI;
 
 	public GistForm(MyUI myUI) {
@@ -17,24 +17,24 @@ public class GistForm extends GistFormDesign {
 		delete.addClickListener(e -> this.delete());
 	}
 
-	public void setCustomer(Gist customer) {
-		this.customer = customer;
-		BeanFieldGroup.bindFieldsUnbuffered(customer, this);
+	public void setGist(Gist gist) {
+		this.gist = gist;
+		BeanFieldGroup.bindFieldsUnbuffered(gist, this);
 
 		// Show delete button for only customers already in the database
-		delete.setVisible(customer.isPersisted());
+		delete.setVisible(gist.isPersisted());
 		setVisible(true);
 		name.selectAll();
 	}
 
 	private void delete() {
-		service.delete(customer);
+		service.delete(gist);
 		myUI.updateList();
 		setVisible(false);
 	}
 
 	private void save() {
-		service.save(customer);
+		service.save(gist);
 		myUI.updateList();
 		setVisible(false);
 	}

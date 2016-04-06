@@ -124,23 +124,12 @@ public class GistService {
 		return contacts.size();
 	}
        
-	/**
-	 * Deletes a customer from a system
-	 *
-	 * @param value
-	 *            the Gist to be deleted
-	 */
+
 	public synchronized void delete(Gist value) {
 		contacts.remove(value.getId());
 	}
         
         
-	/**
-	 * Persists or updates customer in the system. Also assigns an identifier
- for new Gist instances.
-	 *
-	 * @param entry
-	 */
 	public synchronized void save(Gist entry) {
 		if (entry == null) {
 			LOGGER.log(Level.SEVERE,
