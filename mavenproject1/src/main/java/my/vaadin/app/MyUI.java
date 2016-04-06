@@ -120,7 +120,7 @@ public class MyUI extends UI {
 		HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
 		toolbar.setSpacing(true);
 
-		grid.setColumns("name", "note", "price");
+		grid.setColumns("name", "price","type", "buyDate");
 
 		HorizontalLayout main = new HorizontalLayout(grid, form);
 		main.setSpacing(true);

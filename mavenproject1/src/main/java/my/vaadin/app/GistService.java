@@ -161,13 +161,7 @@ public class GistService {
 	 */
 	public void ensureTestData() {
 		if (findAll().isEmpty()) {
-			final String[] names = new String[] { "Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",
-					"Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",
-					"Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",
-					"Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",
-					"Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson", "Lara Martin",
-					"Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",
-					"Jaydan Jackson", "Bernard Nilsen" };
+			final String[] names = new String[] { "Oil Oil","Gas Gas","Tire Tire","Breaks Breaks"};
 			Random r = new Random(0);
 			for (String name : names) {
 				String[] split = name.split(" ");
@@ -177,8 +171,8 @@ public class GistService {
 				c.setPrice(r.nextInt(1000));
 				c.setType(GistStatus.values()[r.nextInt(GistStatus.values().length)]);
 				Calendar cal = Calendar.getInstance();
-				int daysOld = 0 - r.nextInt(365 * 15 + 365 * 60);
-				cal.add(Calendar.DAY_OF_MONTH, daysOld);
+				//int daysOld = 0 - r.nextInt(365 * 15 + 365 * 60);
+				//cal.add(Calendar.DAY_OF_MONTH, daysOld);
 				c.setBuyDate(cal.getTime());
 				save(c);
 			}
