@@ -37,183 +37,183 @@ import com.vaadin.ui.themes.ValoTheme;
 @Push
 public class MyUI extends UI implements Broadcaster.BroadcastListener {
 
-	public TextField user = new TextField("Nickname:");
-	public PasswordField pwd1 = new PasswordField("Password:");
-	public PasswordField pwd2 = new PasswordField("Pass-check:");
-	public Button register = new Button();
-	public FormLayout regform;
-	private VerticalLayout viewLayout;
+    public TextField user = new TextField("Nickname:");
+    public PasswordField pwd1 = new PasswordField("Password:");
+    public PasswordField pwd2 = new PasswordField("Pass-check:");
+    public Button register = new Button();
+    public FormLayout regform;
+    private VerticalLayout viewLayout;
 
-	private Button logout;
-	private VerticalLayout layout;
-        VerticalLayout messages = new VerticalLayout();
-	private GistService service = GistService.getInstance();
-	private Grid grid = new Grid();
-	private TextField filterText = new TextField();
-	GistForm form = new GistForm(this);
+    private Button logout;
+    private VerticalLayout layout;
+    VerticalLayout messages = new VerticalLayout();
+    private GistService service = GistService.getInstance();
+    private Grid grid = new Grid();
+    private TextField filterText = new TextField();
+    GistForm form = new GistForm(this);
 
-	@Override
-	protected void init(VaadinRequest vaadinRequest) {
-		//final VerticalLayout layout = new VerticalLayout();
-                BeanItemContainer<User> users = new BeanItemContainer<User>(User.class);
-		regform = new FormLayout();
-		regform.addComponent(user);
-		regform.addComponent(pwd1);
-		regform.addComponent(pwd2);
-                Broadcaster.register(this);
-		
+    @Override
+    protected void init(VaadinRequest vaadinRequest) {
+        //final VerticalLayout layout = new VerticalLayout();
+        BeanItemContainer<User> users = new BeanItemContainer<User>(User.class);
+        regform = new FormLayout();
+        regform.addComponent(user);
+        regform.addComponent(pwd1);
+        regform.addComponent(pwd2);
+        Broadcaster.register(this);
 
-		register = new Button("register", (Button.ClickListener) (clickEvent) -> {
-			String username = user.getValue();
-			String password1 = pwd1.getValue();
-			String password2 = pwd2.getValue();
-			if (!pwd1.getValue().equals(pwd2.getValue())) {
-				Notification errorNotification = new Notification("Wrong passwords", Notification.Type.ERROR_MESSAGE);
-				errorNotification.setDelayMsec(200);
-				errorNotification.show(Page.getCurrent());
-			}
-			else {
-				users.addBean(new User(user.getValue(), pwd1.getValue()));
-				LoginView loginPanelWindow = new LoginView();
-				getUI().addWindow(loginPanelWindow);
-				setContent(null);
-			}
-		});
-		regform.addComponent(register);
-		viewLayout = new VerticalLayout();
-		viewLayout.setSizeFull();
-		viewLayout.addComponent(regform);
-		viewLayout.setComponentAlignment(regform, Alignment.MIDDLE_CENTER);
+        register = new Button("register", (Button.ClickListener) (clickEvent) -> {
+            String username = user.getValue();
+            String password1 = pwd1.getValue();
+            String password2 = pwd2.getValue();
+            if (!pwd1.getValue().equals(pwd2.getValue())) {
+                Notification errorNotification = new Notification("Wrong passwords", Notification.Type.ERROR_MESSAGE);
+                errorNotification.setDelayMsec(200);
+                errorNotification.show(Page.getCurrent());
+            } else {
+                users.addBean(new User(user.getValue(), pwd1.getValue()));
+                LoginView loginPanelWindow = new LoginView();
+                getUI().addWindow(loginPanelWindow);
+                setContent(null);
+            }
+        });
+        regform.addComponent(register);
+        viewLayout = new VerticalLayout();
+        viewLayout.setSizeFull();
+        viewLayout.addComponent(regform);
+        viewLayout.setComponentAlignment(regform, Alignment.MIDDLE_CENTER);
 
-		layout = new VerticalLayout();
-		// layout.setSizeUndefined();
-		layout.setWidth("100%");
-		layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+        layout = new VerticalLayout();
+        // layout.setSizeUndefined();
+        layout.setWidth("100%");
+        layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
-		// MAIN
+        // MAIN
+        logout = new Button("Exit", (Button.ClickListener) (clickEvent) -> {
+            getCurrentSession().removeAttribute("user");
+            setContent(null);
+            getUI().addWindow(new LoginView());
+            addStyleName(ValoTheme.BUTTON_DANGER);
+        });
 
-		logout = new Button("logout", (Button.ClickListener) (clickEvent) -> {
-			getCurrentSession().removeAttribute("user");
-			setContent(null);
-			getUI().addWindow(new LoginView());
-		});
+        layout.addComponent(logout);
 
-		layout.addComponent(logout);
+        filterText.setInputPrompt("Write part name");
+        filterText.addTextChangeListener(e -> {
+            grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, service.findAll(e.getText())));
+        });
 
-		filterText.setInputPrompt("Write part name");
-		filterText.addTextChangeListener(e -> {
-			grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, service.findAll(e.getText())));
-		});
+        Button clearFilterTextBtn = new Button("Clear");
 
-		Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
-		clearFilterTextBtn.setDescription("Clear");
-		clearFilterTextBtn.addClickListener(e -> {
-			filterText.clear();
-			updateList();
-		});
+        clearFilterTextBtn.setIcon(FontAwesome.SUN_O);
+        clearFilterTextBtn.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
+        clearFilterTextBtn.setDescription("Clear");
+        clearFilterTextBtn.addClickListener(e -> {
+            filterText.clear();
+            updateList();
+        });
 
-		CssLayout filtering = new CssLayout();
-		filtering.addComponents(filterText, clearFilterTextBtn);
-		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        CssLayout filtering = new CssLayout();
+        filtering.addComponents(filterText, clearFilterTextBtn);
+        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-		Button addBtn = new Button("Add new gist");
-		addBtn.addClickListener(e -> {
-			grid.select(null);
-			form.setGist(new Gist());
-		});
+        Button addBtn = new Button("Add new gist");
+        addBtn.addStyleName(ValoTheme.BUTTON_DANGER);
+        addBtn.addClickListener(e -> {
+            grid.select(null);
+            form.setGist(new Gist());
+        });
 
-		HorizontalLayout toolbar = new HorizontalLayout(filtering, addBtn);
-		toolbar.setSpacing(true);
+        HorizontalLayout toolbar = new HorizontalLayout(filtering, addBtn);
+        toolbar.setSpacing(true);
 
-		grid.setColumns("name", "price","type", "buyDate");
+        grid.setColumns("name", "price", "type", "buyDate");
 
-		HorizontalLayout main = new HorizontalLayout(grid, form);
-		main.setSpacing(true);
-		main.setSizeFull();
-		grid.setSizeFull();
-		main.setExpandRatio(grid, 1);
+        HorizontalLayout main = new HorizontalLayout(grid, form);
+        main.setSpacing(true);
+        main.setSizeFull();
+        grid.setSizeFull();
+        main.setExpandRatio(grid, 1);
 
-		layout.addComponents(toolbar, main);
+        layout.addComponents(toolbar, main);
 
-		updateList();
+        updateList();
 
-		layout.setMargin(true);
-		layout.setSpacing(true);
-		setContent(layout);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        setContent(layout);
 
-		form.setVisible(false);
+        form.setVisible(false);
 
-		grid.addSelectionListener(event -> {
-			if (event.getSelected().isEmpty()) {
-				form.setVisible(false);
-			} else {
-				Gist gist = (Gist) event.getSelected().iterator().next();
-				form.setGist(gist);
-			}
-		});
-                
-                if (!isLoggedIn()) {
-			LoginView loginPanelWindow = new LoginView();
-			getUI().addWindow(loginPanelWindow);
-			setContent(null);
-		} else {
-			setContent(layout);
-		}
+        grid.addSelectionListener(event -> {
+            if (event.getSelected().isEmpty()) {
+                form.setVisible(false);
+            } else {
+                Gist gist = (Gist) event.getSelected().iterator().next();
+                form.setGist(gist);
+            }
+        });
 
-	}
-        
-        public static boolean isRegistered() {
-		WrappedSession currentSession = VaadinService.getCurrentRequest().getWrappedSession();
-		return currentSession.getAttribute("register") != null;
-	}
+        if (!isLoggedIn()) {
+            LoginView loginPanelWindow = new LoginView();
+            getUI().addWindow(loginPanelWindow);
+            setContent(null);
+        } else {
+            setContent(layout);
+        }
 
-	public static boolean isLoggedIn() {
-		WrappedSession currentSession = VaadinService.getCurrentRequest().getWrappedSession();
-		return currentSession.getAttribute("user") != null;
-	}
+    }
 
-	public static WrappedSession getCurrentSession() {
-		return VaadinService.getCurrentRequest().getWrappedSession();
-	}
+    public static boolean isRegistered() {
+        WrappedSession currentSession = VaadinService.getCurrentRequest().getWrappedSession();
+        return currentSession.getAttribute("register") != null;
+    }
 
-	public void updateList() {
-		// fetch list of Customers from service and assign it to Grid
-		List<Gist> customers = service.findAll(filterText.getValue());
-		grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, customers));
-	}
+    public static boolean isLoggedIn() {
+        WrappedSession currentSession = VaadinService.getCurrentRequest().getWrappedSession();
+        return currentSession.getAttribute("user") != null;
+    }
 
-        @Override
+    public static WrappedSession getCurrentSession() {
+        return VaadinService.getCurrentRequest().getWrappedSession();
+    }
+
+    public void updateList() {
+        // fetch list of Customers from service and assign it to Grid
+        List<Gist> customers = service.findAll(filterText.getValue());
+        grid.setContainerDataSource(new BeanItemContainer<>(Gist.class, customers));
+    }
+
+    @Override
     public void receiveBroadcast(final String message) {
         // Must lock the session to execute logic safely
         access(new Runnable() {
             @Override
             public void run() {
-                
+
                 updateList();
                 messages.addComponent(new Label(message));
             }
         });
     }
-	@Override
-	public void detach() {
-		Broadcaster.unregister(this);
-		super.detach();
-	}
-        
-        
-        
-        public void setRegContent() {
-		setContent(viewLayout);
-	}
 
-	public void setMainContent() {
-		setContent(layout);
-	}
-        
-	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
-	public static class MyUIServlet extends VaadinServlet {
-	}
-        
+    @Override
+    public void detach() {
+        Broadcaster.unregister(this);
+        super.detach();
+    }
+
+    public void setRegContent() {
+        setContent(viewLayout);
+    }
+
+    public void setMainContent() {
+        setContent(layout);
+    }
+
+    @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
+    @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
+    public static class MyUIServlet extends VaadinServlet {
+    }
 
 }

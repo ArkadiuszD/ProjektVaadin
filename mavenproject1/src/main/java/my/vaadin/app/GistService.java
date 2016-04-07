@@ -23,7 +23,7 @@ public class GistService {
         private static double sum;
 	private static final Logger LOGGER = Logger.getLogger(GistService.class.getName());
 
-	private final HashMap<Long, Gist> contacts = new HashMap<>();
+	private final HashMap<Long, Gist> gists = new HashMap<>();
 	private long nextId = 0;
 
 	private GistService() {
@@ -57,7 +57,7 @@ public class GistService {
 	 */
 	public synchronized List<Gist> findAll(String stringFilter) {
 		ArrayList<Gist> arrayList = new ArrayList<>();
-		for (Gist contact : contacts.values()) {
+		for (Gist contact : gists.values()) {
 			try {
 				boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
 						|| contact.toString().toLowerCase().contains(stringFilter.toLowerCase());
@@ -92,12 +92,12 @@ public class GistService {
 	 */
 	public synchronized List<Gist> findAll(String stringFilter, int start, int maxresults) {
 		ArrayList<Gist> arrayList = new ArrayList<>();
-		for (Gist contact : contacts.values()) {
+		for (Gist gist : gists.values()) {
 			try {
 				boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-						|| contact.toString().toLowerCase().contains(stringFilter.toLowerCase());
+						|| gist.toString().toLowerCase().contains(stringFilter.toLowerCase());
 				if (passesFilter) {
-					arrayList.add(contact.clone());
+					arrayList.add(gist.clone());
 				}
 			} catch (CloneNotSupportedException ex) {
 				Logger.getLogger(GistService.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,12 +121,12 @@ public class GistService {
 	 * @return the amount of all customers in the system
 	 */
 	public synchronized long count() {
-		return contacts.size();
+		return gists.size();
 	}
        
 
 	public synchronized void delete(Gist value) {
-		contacts.remove(value.getId());
+		gists.remove(value.getId());
 	}
         
         
@@ -144,7 +144,7 @@ public class GistService {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		contacts.put(entry.getId(), entry);
+		gists.put(entry.getId(), entry);
 	}
 
 	/**

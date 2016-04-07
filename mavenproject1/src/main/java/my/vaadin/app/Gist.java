@@ -104,20 +104,10 @@ public class Gist implements Serializable, Cloneable {
 		return false;
 	}
 
-	@Override
-	public int hashCode() {
-		int hash = 5;
-		hash = 43 * hash + (id == null ? 0 : id.hashCode());
-		return hash;
-	}
 
 	@Override
 	public Gist clone() throws CloneNotSupportedException {
 		return (Gist) super.clone();
 	}
 
-	@Override
-	public String toString() {
-		return name + " " + note;
-	}
 }

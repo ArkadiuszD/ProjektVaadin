@@ -11,7 +11,7 @@ public class LoginView extends Window{
     private Notification welcomeNotification;
 
     public LoginView(){
-        super("Vaadin app");
+        super("Log into application");
         this.setResizable(true);
         this.setClosable(false);
         this.setModal(true);

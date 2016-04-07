@@ -28,14 +28,7 @@ public class UserService {
 		return listOfUsers;
 	}
 
-	public boolean isAlreadyRegistered(User user) {
-		for (User u : getUsers()) {
-			if (u.getName().equals(user.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
+
 
 	public boolean checkPassword(User user) {
 		for (User u : getUsers()) {

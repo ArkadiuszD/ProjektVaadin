@@ -36,7 +36,7 @@ public class LoginForm extends CustomComponent {
         password = binder.buildAndBind("password", "pass", PasswordField.class);
         password.setValue("");
         login.setValue("");
-        submit = new Button("submit", (Button.ClickListener) (clickEvent) -> {
+        submit = new Button("Login", (Button.ClickListener) (clickEvent) -> {
 
             try {
                 binder.commit();
@@ -59,7 +59,7 @@ public class LoginForm extends CustomComponent {
                 e.printStackTrace();
             }
         });
-        register = new Button("register", (Button.ClickListener) (clickEvent) -> {
+        register = new Button("Sign In", (Button.ClickListener) (clickEvent) -> {
             LoginView parent = (LoginView) getParent();
             MyUI root = (MyUI) parent.getParent();
             parent.close();
