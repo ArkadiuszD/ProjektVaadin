@@ -2,20 +2,33 @@ package my.vaadin.app;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @SuppressWarnings("serial")
 public class Gist implements Serializable, Cloneable {
 
 	private Long id;
-
+        
+        @NotEmpty(message = "This field can't be empty")
+        @Size(min = 3, max = 20, message = "Name must have 3 or more character")
 	private String name = "";
 
+      //  @NotEmpty(message = "This field can't be empty")
+        @Size(min = 3, max = 100, message = "Note must have 3 or more character")
 	private String note = "";
-
+        
+        @Past(message = "Date can't be from future")
 	private Date buyDate;
-
+        
+        @NotEmpty(message = "This field can't be empty")
 	private GistStatus type;
-
+        
+        @Min(value=0, message = "Only possitive value" )
 	private double price;
 
 	public Long getId() {

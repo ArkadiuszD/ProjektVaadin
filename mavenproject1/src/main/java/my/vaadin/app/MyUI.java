@@ -21,6 +21,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -45,6 +46,7 @@ public class MyUI extends UI implements Broadcaster.BroadcastListener {
 
 	private Button logout;
 	private VerticalLayout layout;
+        VerticalLayout messages = new VerticalLayout();
 	private GistService service = GistService.getInstance();
 	private Grid grid = new Grid();
 	private TextField filterText = new TextField();
@@ -186,7 +188,9 @@ public class MyUI extends UI implements Broadcaster.BroadcastListener {
         access(new Runnable() {
             @Override
             public void run() {
+                
                 updateList();
+                messages.addComponent(new Label(message));
             }
         });
     }
@@ -195,6 +199,8 @@ public class MyUI extends UI implements Broadcaster.BroadcastListener {
 		Broadcaster.unregister(this);
 		super.detach();
 	}
+        
+        
         
         public void setRegContent() {
 		setContent(viewLayout);

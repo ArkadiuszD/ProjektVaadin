@@ -1,11 +1,15 @@
 package my.vaadin.app;
 
+import com.vaadin.server.Page;
+import com.vaadin.ui.Notification;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Broadcaster implements Serializable {
+    
+         private Notification addNotification;
 	static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	public interface BroadcastListener {
@@ -27,8 +31,11 @@ public class Broadcaster implements Serializable {
 			executorService.execute(new Runnable() {
 				@Override
 				public void run() {
-					listener.receiveBroadcast(message);
+                                        
+					listener.receiveBroadcast("Something change");
 				}
 			});
 	}
+        
+
 }
